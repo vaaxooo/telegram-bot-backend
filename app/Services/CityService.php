@@ -33,7 +33,8 @@ class CityService
 	public function store($request)
 	{
 		$validator = Validator::make($request->all(), [
-			'name' => 'required'
+			'name' => 'required',
+			'slug' => 'required|unique:cities'
 		]);
 		if ($validator->fails()) {
 			return [
@@ -77,7 +78,8 @@ class CityService
 	public function update($request, $city)
 	{
 		$validator = Validator::make($request->all(), [
-			'name' => 'required'
+			'name' => 'required',
+			'slug' => 'required|unique:cities,slug,' . $city->id . ',id'
 		]);
 		if ($validator->fails()) {
 			return [
@@ -86,7 +88,7 @@ class CityService
 				'data' => $validator->errors()
 			];
 		}
-		$city->update($request->all());
+		City::where('id', $city->id)->update($request->all());
 		return [
 			'code' => 200,
 			'status' => 'success',
