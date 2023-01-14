@@ -70,9 +70,6 @@ Route::get('client/profile', '\App\Http\Controllers\ApiController@getProfile');
 Route::get('client/balance', '\App\Http\Controllers\ApiController@getBalance');
 Route::post('client/set-referral', '\App\Http\Controllers\ApiController@setReferral');
 
-// CATEGORIES
-Route::get('categories', '\App\Http\Controllers\ApiController@getCategories');
-
 // ORDERS
 Route::get('orders', '\App\Http\Controllers\ApiController@getOrders');
 Route::get('orders/{order}', '\App\Http\Controllers\ApiController@getOrder');
