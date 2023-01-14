@@ -390,35 +390,44 @@ class ApiService
 	 */
 	public function getCategories($request)
 	{
-		$validator = Validator::make($request->all(), [
-			'city_id' => 'required',
-		]);
-		if ($validator->fails()) {
+		try {
+			$validator = Validator::make($request->all(), [
+				'city_id' => 'required',
+			]);
+			if ($validator->fails()) {
+				return [
+					'code' => 400,
+					'status' => 'error',
+					'message' => 'Bad request',
+					'errors' => $validator->errors()
+				];
+			}
+			$city = City::where('id', $request->city_id)->first();
+			if (!$city) {
+				return [
+					'code' => 404,
+					'status' => 'error',
+					'message' => 'City not found',
+					'data' => $city
+				];
+			}
+			$categories = RelationCategory::with('category')
+				->where('city_id', $request->city_id)
+				->pluck('category_id')->toArray();
+			$categories = Category::select('id', 'name', 'slug')->whereIn('id', $categories)->get();
 			return [
-				'code' => 400,
+				'code' => 200,
+				'status' => 'success',
+				'data' => $categories
+			];
+		} catch (\Exception $e) {
+			return [
+				'code' => 500,
 				'status' => 'error',
-				'message' => 'Bad request',
-				'errors' => $validator->errors()
+				'message' => 'Internal server error',
+				'errors' => $e->getMessage()
 			];
 		}
-		$city = City::where('city_id', $request->city_id)->first();
-		if (!$city) {
-			return [
-				'code' => 404,
-				'status' => 'error',
-				'message' => 'City not found',
-				'data' => $city
-			];
-		}
-		$categories = RelationCategory::with('categories')
-			->where('city_id', $request->city_id)
-			->where('is_active', true)
-			->get();
-		return [
-			'code' => 200,
-			'status' => 'success',
-			'data' => $categories
-		];
 	}
 
 	/* ########################## PRODUCTS ########################## */
