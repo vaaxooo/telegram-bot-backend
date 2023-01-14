@@ -16,11 +16,11 @@ return new class extends Migration
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
             $table->string('telegram_id');
-            $table->string('nickname');
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->string('language_code');
-            $table->string('phone_number');
+            $table->string('nickname')->nullable();
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
+            $table->string('language_code')->default('ru');
+            $table->string('phone_number')->nullable();
             $table->string('balance')->default('0');
             $table->unsignedBigInteger('referral')->nullable();
             $table->boolean('is_banned')->default(false);

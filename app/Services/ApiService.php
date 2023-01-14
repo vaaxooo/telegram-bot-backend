@@ -7,7 +7,11 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\City;
 use App\Models\User;
+use App\Models\Order;
+
 use Illuminate\Support\Facades\Validator;
+use Telegram\Bot\Laravel\Facades\Telegram;
+
 
 class ApiService
 {
@@ -24,42 +28,51 @@ class ApiService
 	 */
 	public function start($request)
 	{
-		$validator = Validator::make($request->all(), [
-			'telegram_id' => 'required',
-			'language_code' => 'required',
-		]);
-		if ($validator->fails()) {
+		try {
+			$validator = Validator::make($request->all(), [
+				'telegram_id' => 'required',
+				'language_code' => 'required',
+			]);
+			if ($validator->fails()) {
+				return [
+					'code' => 400,
+					'status' => 'error',
+					'message' => 'Bad request',
+					'errors' => $validator->errors()
+				];
+			}
+			$client = Client::where('telegram_id', $request->telegram_id)->first();
+			if (!$client) {
+				$client = Client::create($request->all());
+				return [
+					'code' => 201,
+					'status' => 'success',
+					'message' => 'Client created',
+					'data' => $client
+				];
+			}
+			if ($client->is_banned == true) {
+				return [
+					'code' => 403,
+					'status' => 'error',
+					'message' => 'Client is banned',
+					'data' => $client
+				];
+			}
 			return [
-				'code' => 400,
-				'status' => 'error',
-				'message' => 'Bad request',
-				'errors' => $validator->errors()
-			];
-		}
-		$client = Client::where('telegram_id', $request->telegram_id)->first();
-		if (!$client) {
-			$client = Client::create($request->all());
-			return [
-				'code' => 201,
+				'code' => 200,
 				'status' => 'success',
-				'message' => 'Client created',
+				'message' => 'Client exists',
 				'data' => $client
 			];
-		}
-		if ($client->is_banned == true) {
+		} catch (\Exception $e) {
 			return [
-				'code' => 403,
+				'code' => 500,
 				'status' => 'error',
-				'message' => 'Client is banned',
-				'data' => $client
+				'message' => 'Internal server error',
+				'errors' => $e->getMessage()
 			];
 		}
-		return [
-			'code' => 200,
-			'status' => 'success',
-			'message' => 'Client exists',
-			'data' => $client
-		];
 	}
 
 	/**
@@ -180,5 +193,94 @@ class ApiService
 		];
 	}
 
-	/* ########################## CITIES ########################## */
+	/* ########################## ORDERS ########################## */
+
+	/**
+	 * It creates a new order.
+	 * 
+	 * @param request The request object.
+	 * 
+	 * @return The return is an array with the following keys:
+	 */
+	public function createOrder($request)
+	{
+		$validator = Validator::make($request->all(), [
+			'telegram_id' => 'required',
+			'product_id' => 'required',
+			'quantity' => 'required',
+		]);
+		if ($validator->fails()) {
+			return [
+				'code' => 400,
+				'status' => 'error',
+				'message' => 'Bad request',
+				'errors' => $validator->errors()
+			];
+		}
+		$client = Client::where('telegram_id', $request->telegram_id)->first();
+		if (!$client) {
+			return [
+				'code' => 404,
+				'status' => 'error',
+				'message' => 'Client not found',
+				'data' => $client
+			];
+		}
+		$product = Product::where('id', $request->product_id)->first();
+		if (!$product) {
+			return [
+				'code' => 404,
+				'status' => 'error',
+				'message' => 'Product not found',
+				'data' => $product
+			];
+		}
+		if ($product->stock < $request->quantity) {
+			return [
+				'code' => 400,
+				'status' => 'error',
+				'message' => 'Not enough stock',
+				'data' => $product
+			];
+		}
+		if ($client->balance < $product->price * $request->quantity) {
+			return [
+				'code' => 400,
+				'status' => 'error',
+				'message' => 'Not enough balance',
+				'data' => $product
+			];
+		}
+		$order = Order::create([
+			'client_id' => $client->id,
+			'product_id' => $product->id,
+			'quantity' => $request->quantity,
+			'total_price' => $product->price * $request->quantity,
+			'status' => 'pending',
+		]);
+		$client->balance = (int) $client->balance - $product->price * $request->quantity;
+		$client->save();
+		$product->stock = (int) $product->stock - $request->quantity;
+		$product->save();
+
+
+		$tMessage = "📦 *New order* 📦" . PHP_EOL;
+		$tMessage .= "👤 *Client:* " . $client->telegram_id . PHP_EOL;
+		$tMessage .= "📦 *Product:* " . $product->name . PHP_EOL;
+		$tMessage .= "📦 *Quantity:* " . $request->quantity . PHP_EOL;
+		$tMessage .= "📦 *Total price:* " . $product->price * $request->quantity . PHP_EOL;
+
+		Telegram::sendMessage([
+			'chat_id' => env('TELEGRAM_SUPPORT_CHAT_ID'),
+			'text' => $tMessage,
+			'parse_mode' => 'Markdown',
+		]);
+
+		return [
+			'code' => 200,
+			'status' => 'success',
+			'message' => 'Order created',
+			'data' => $order
+		];
+	}
 }

@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Telegram\Bot\Laravel\Facades\Telegram;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,11 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::post('/bot/get-updates', function () {
+    $updates = Telegram::getUpdates();
+    return (json_encode($updates));
+});
 
 Route::group(['middleware' => ['api']], function ($route) {
 
@@ -39,6 +45,10 @@ Route::group(['middleware' => ['api']], function ($route) {
     // CLIENTS
     Route::get('clients/{client}/banned', '\App\Http\Controllers\ClientController@banned');
     Route::resource('clients', '\App\Http\Controllers\ClientController');
+
+    // ORDERS
+    Route::post('orders/{order}/set-status', '\App\Http\Controllers\OrderController@setStatus');
+    Route::resource('orders', '\App\Http\Controllers\OrderController');
 });
 
 
