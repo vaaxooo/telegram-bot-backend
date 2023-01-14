@@ -19,15 +19,26 @@ class AuthService
 	 */
 	public function login()
 	{
-		$credentials = request(['email', 'password']);
-		if (!$token = auth()->attempt($credentials)) {
+		$credentials = request(['name', 'password']);
+
+		$client = User::where('name', $credentials['name'])->first();
+		if (!$client) {
 			return response()->json([
 				'code' => 401,
-				'message' => 'E-mail or password is wrong',
+				'message' => 'Name or password is wrong',
 				'status' => 'error'
 			]);
 		}
-		return $this->respondWithToken($token);
+
+		if (Hash::check($credentials['password'], $client->password)) {
+			$token = auth()->login($client);
+			return $this->respondWithToken($token);
+		}
+		return response()->json([
+			'code' => 401,
+			'message' => 'Name or password is wrong',
+			'status' => 'error'
+		]);
 	}
 
 	/**
@@ -37,7 +48,7 @@ class AuthService
 	 */
 	public function me()
 	{
-		$user = User::where('email', auth()->user()->email)->first();
+		$user = User::where('name', auth()->user()->name)->first();
 		return [
 			'code' => 200,
 			'status' => 'success',
