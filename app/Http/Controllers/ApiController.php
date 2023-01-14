@@ -64,5 +64,95 @@ class ApiController extends Controller
 		return response()->json($this->apiService->setReferral($request));
 	}
 
+	/* ########################## ORDERS ########################## */
+
+	/**
+	 * It takes a request, passes it to the apiService, and returns the response as json
+	 * 
+	 * @param Request request The request object
+	 * 
+	 * @return The response is being returned as a JSON object.
+	 */
+	public function createOrder(Request $request)
+	{
+		return response()->json($this->apiService->createOrder($request));
+	}
+
+	/**
+	 * It takes a request, passes it to the apiService, and returns the response as json
+	 * 
+	 * @param Request request The request object
+	 * 
+	 * @return The response is being returned as a JSON object.
+	 */
+	public function getOrders(Request $request)
+	{
+		return response()->json($this->apiService->getOrders($request));
+	}
+
+	/**
+	 * It takes a request, passes it to the apiService, and returns the response as json
+	 * 
+	 * @param Request request The request object
+	 * 
+	 * @return The response is being returned as a JSON object.
+	 */
+	public function getOrder(Request $request)
+	{
+		return response()->json($this->apiService->getOrder($request));
+	}
+
+	/* ########################## CITIES ########################## */
+
+	/**
+	 * It takes a request, passes it to the apiService, and returns the response as json
+	 * 
+	 * @param Request request The request object
+	 * 
+	 * @return The response is being returned as a JSON object.
+	 */
+	public function getCities(Request $request)
+	{
+		return response()->json($this->apiService->getCities($request));
+	}
+
 	/* ########################## CATEGORIES ########################## */
+
+	/**
+	 * It takes a request, passes it to the apiService, and returns the response as json
+	 * 
+	 * @param Request request The request object
+	 * 
+	 * @return The response is being returned as a JSON object.
+	 */
+	public function getCategories(Request $request)
+	{
+		return response()->json($this->apiService->getCategories($request));
+	}
+
+	/* ########################## PRODUCTS ########################## */
+
+	/**
+	 * It takes a request, passes it to the apiService, and returns the response as json
+	 * 
+	 * @param Request request The request object
+	 * 
+	 * @return The response is being returned as a JSON object.
+	 */
+	public function getProducts(Request $request)
+	{
+		return response()->json($this->apiService->getProducts($request));
+	}
+
+	/**
+	 * It takes a request, passes it to the apiService, and returns the response as json
+	 * 
+	 * @param Request request The request object
+	 * 
+	 * @return The response is being returned as a JSON object.
+	 */
+	public function getProductById(Request $request)
+	{
+		return response()->json($this->apiService->getProductById($request));
+	}
 }

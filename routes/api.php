@@ -31,30 +31,59 @@ Route::group(['middleware' => ['api']], function ($route) {
     });
 
 
-    // CITIES
-    Route::resource('cities', '\App\Http\Controllers\CityController');
+    /* This is a route group that is prefixed with 'admin'. */
+    Route::group(['prefix' => 'admin'], function () {
+        // CITIES
+        Route::resource('cities', '\App\Http\Controllers\CityController');
 
-    // CATEGORIES
-    Route::get('categories/{category}/visibility', '\App\Http\Controllers\CategoryController@visibility');
-    Route::resource('categories', '\App\Http\Controllers\CategoryController');
+        // CATEGORIES
+        Route::get('categories/{category}/visibility', '\App\Http\Controllers\CategoryController@visibility');
+        Route::resource('categories', '\App\Http\Controllers\CategoryController');
 
-    // PRODUCTS
-    Route::get('products/{product}/visibility', '\App\Http\Controllers\ProductController@visibility');
-    Route::resource('products', '\App\Http\Controllers\ProductController');
+        // PRODUCTS
+        Route::get('products/{product}/visibility', '\App\Http\Controllers\ProductController@visibility');
+        Route::resource('products', '\App\Http\Controllers\ProductController');
 
-    // CLIENTS
-    Route::get('clients/{client}/banned', '\App\Http\Controllers\ClientController@banned');
-    Route::resource('clients', '\App\Http\Controllers\ClientController');
+        // CLIENTS
+        Route::get('clients/{client}/banned', '\App\Http\Controllers\ClientController@banned');
+        Route::resource('clients', '\App\Http\Controllers\ClientController');
 
-    // ORDERS
-    Route::post('orders/{order}/set-status', '\App\Http\Controllers\OrderController@setStatus');
-    Route::resource('orders', '\App\Http\Controllers\OrderController');
+        // ORDERS
+        Route::post('orders/{order}/set-status', '\App\Http\Controllers\OrderController@setStatus');
+        Route::resource('orders', '\App\Http\Controllers\OrderController');
+
+        // RELATIONS
+        Route::resource('relations', '\App\Http\Controllers\RelationCategoryController');
+
+        // MAILING
+        Route::post('mailing/send', '\App\Http\Controllers\MailingController@send');
+        Route::post('mailing/send-by-telegram-id', '\App\Http\Controllers\MailingController@sendByTelegramId');
+    });
 });
 
 
 /* ########################## API ########################## */
 
+// CLIENTS
 Route::post('client/start', '\App\Http\Controllers\ApiController@start');
 Route::get('client/profile', '\App\Http\Controllers\ApiController@getProfile');
 Route::get('client/balance', '\App\Http\Controllers\ApiController@getBalance');
 Route::post('client/set-referral', '\App\Http\Controllers\ApiController@setReferral');
+
+// CATEGORIES
+Route::get('categories', '\App\Http\Controllers\ApiController@getCategories');
+
+// ORDERS
+Route::get('orders', '\App\Http\Controllers\ApiController@getOrders');
+Route::get('orders/{order}', '\App\Http\Controllers\ApiController@getOrder');
+Route::post('orders/create', '\App\Http\Controllers\ApiController@createOrder');
+
+// CITIES
+Route::get('cities', '\App\Http\Controllers\ApiController@getCities');
+
+// CATEGORIES
+Route::get('categories', '\App\Http\Controllers\ApiController@getCategories');
+
+// PRODUCTS
+Route::get('products', '\App\Http\Controllers\ApiController@getProducts');
+Route::get('products/{product}', '\App\Http\Controllers\ApiController@getProductById');

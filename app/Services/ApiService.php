@@ -8,7 +8,7 @@ use App\Models\Category;
 use App\Models\City;
 use App\Models\User;
 use App\Models\Order;
-
+use App\Models\RelationCategory;
 use Illuminate\Support\Facades\Validator;
 use Telegram\Bot\Laravel\Facades\Telegram;
 
@@ -196,6 +196,87 @@ class ApiService
 	/* ########################## ORDERS ########################## */
 
 	/**
+	 * It gets all orders of a client by his telegram id
+	 * 
+	 * @param request The request object.
+	 * 
+	 * @return An array of orders.
+	 */
+	public function getOrders($request)
+	{
+		$validator = Validator::make($request->all(), [
+			'telegram_id' => 'required',
+		]);
+		if ($validator->fails()) {
+			return [
+				'code' => 400,
+				'status' => 'error',
+				'message' => 'Bad request',
+				'errors' => $validator->errors()
+			];
+		}
+		$client = Client::where('telegram_id', $request->telegram_id)->first();
+		if (!$client) {
+			return [
+				'code' => 404,
+				'status' => 'error',
+				'message' => 'Client not found',
+				'data' => $client
+			];
+		}
+		$orders = Order::where('client_id', $client->id)->get();
+		return [
+			'code' => 200,
+			'status' => 'success',
+			'data' => $orders
+		];
+	}
+
+	/**
+	 * It gets an order by its id and the client's telegram id
+	 * 
+	 * @param request The request object
+	 */
+	public function getOrder($request)
+	{
+		$validator = Validator::make($request->all(), [
+			'telegram_id' => 'required',
+			'order_id' => 'required',
+		]);
+		if ($validator->fails()) {
+			return [
+				'code' => 400,
+				'status' => 'error',
+				'message' => 'Bad request',
+				'errors' => $validator->errors()
+			];
+		}
+		$client = Client::where('telegram_id', $request->telegram_id)->first();
+		if (!$client) {
+			return [
+				'code' => 404,
+				'status' => 'error',
+				'message' => 'Client not found',
+				'data' => $client
+			];
+		}
+		$order = Order::where('client_id', $client->id)->where('id', $request->order_id)->first();
+		if (!$order) {
+			return [
+				'code' => 404,
+				'status' => 'error',
+				'message' => 'Order not found',
+				'data' => $order
+			];
+		}
+		return [
+			'code' => 200,
+			'status' => 'success',
+			'data' => $order
+		];
+	}
+
+	/**
 	 * It creates a new order.
 	 * 
 	 * @param request The request object.
@@ -263,7 +344,6 @@ class ApiService
 		$product->stock = (int) $product->stock - $request->quantity;
 		$product->save();
 
-
 		$tMessage = "📦 *New order* 📦" . PHP_EOL;
 		$tMessage .= "👤 *Client:* " . $client->telegram_id . PHP_EOL;
 		$tMessage .= "📦 *Product:* " . $product->name . PHP_EOL;
@@ -281,6 +361,88 @@ class ApiService
 			'status' => 'success',
 			'message' => 'Order created',
 			'data' => $order
+		];
+	}
+
+	/* ########################## CITIES ########################## */
+
+	/**
+	 * It gets all the cities.
+	 * 
+	 * @return The return is an array with the following keys:
+	 */
+	public function getCities()
+	{
+		$cities = City::get();
+		return [
+			'code' => 200,
+			'status' => 'success',
+			'data' => $cities
+		];
+	}
+
+	/* ########################## CATEGORIES ########################## */
+
+	public function getCategories($request)
+	{
+		$categories = RelationCategory::with('categories')
+			->where('city_id', $request->city_id)
+			->where('is_active', true)
+			->get();
+		return [
+			'code' => 200,
+			'status' => 'success',
+			'data' => $categories
+		];
+	}
+
+	/* ########################## PRODUCTS ########################## */
+
+	/**
+	 * It gets all the products.
+	 * 
+	 * @return The return is an array with the following keys:
+	 */
+	public function getProducts($request)
+	{
+		$products = Product::where('category_id', $request->category_id)
+			->where('is_active', true)
+			->get();
+		return [
+			'code' => 200,
+			'status' => 'success',
+			'data' => $products
+		];
+	}
+
+	/**
+	 * It returns a product if it exists, otherwise it returns an error
+	 * 
+	 * @param request The request object
+	 * 
+	 * @return An array with the following keys:
+	 * - code
+	 * - status
+	 * - message
+	 * - data
+	 */
+	public function getProductById($request)
+	{
+		$product = Product::where('id', $request->product_id)
+			->where('is_active', true)
+			->first();
+		if (!$product) {
+			return [
+				'code' => 404,
+				'status' => 'error',
+				'message' => 'Product not found',
+				'data' => $product
+			];
+		}
+		return [
+			'code' => 200,
+			'status' => 'success',
+			'data' => $product
 		];
 	}
 }
