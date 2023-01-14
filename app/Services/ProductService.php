@@ -1,0 +1,166 @@
+<?php
+
+namespace App\Services;
+
+use App\Models\Product;
+use Illuminate\Support\Facades\Validator;
+use Intervention\Image\Facades\Image;
+
+class ProductService
+{
+
+	/**
+	 * It gets all the products from the database and returns them in a JSON format
+	 * 
+	 * @return An array with the code, status, and products.
+	 */
+	public function index()
+	{
+		$products = Product::get();
+		return [
+			'code' => 200,
+			'status' => 'success',
+			'products' => $products
+		];
+	}
+
+	/**
+	 * It validates the request, checks if the request has an image, uploads the image, and creates a new
+	 * product
+	 * 
+	 * @param request This is the request object that contains all the data that was sent to the server.
+	 * 
+	 * @return An array with a code, status, and product.
+	 */
+	public function store($request)
+	{
+		$validator = Validator::make($request->all(), [
+			'name' => 'required',
+			'price' => 'required',
+			'category_id' => 'required',
+			'stock' => 'required',
+			'description' => 'required',
+		]);
+		if ($validator->fails()) {
+			return [
+				'code' => 400,
+				'status' => 'error',
+				'errors' => $validator->errors()
+			];
+		}
+		if ($request->hasFile('image')) {
+			$image = $request->file('image');
+			$filename = time() . '.' . $image->getClientOriginalExtension();
+			$location = public_path('images/' . $filename);
+			Image::make($image)->resize(800, 400)->save($location);
+		}
+		$product = Product::create([
+			'name' => $request->name,
+			'price' => $request->price,
+			'category_id' => $request->category_id,
+			'stock' => $request->stock,
+			'description' => $request->description,
+			'image' => '/images/' . $filename,
+		]);
+		return [
+			'code' => 200,
+			'status' => 'success',
+			'product' => $product
+		];
+	}
+
+	/**
+	 * It returns an array with three keys: `code`, `status`, and `product`
+	 * 
+	 * @param product The product object that was retrieved from the database.
+	 * 
+	 * @return An array with the code, status, and product.
+	 */
+	public function show($product)
+	{
+		return [
+			'code' => 200,
+			'status' => 'success',
+			'product' => $product
+		];
+	}
+
+	/**
+	 * It validates the request, checks if the request has an image, uploads the image, and updates the
+	 * product
+	 * 
+	 * @param request This is the request object that contains all the data that was sent to the server.
+	 * @param product The product object that was retrieved from the database.
+	 * 
+	 * @return An array with a code, status, and product.
+	 */
+	public function update($request, $product)
+	{
+		$validator = Validator::make($request->all(), [
+			'name' => 'required',
+			'price' => 'required',
+			'category_id' => 'required',
+			'stock' => 'required',
+			'description' => 'required',
+		]);
+		if ($validator->fails()) {
+			return [
+				'code' => 400,
+				'status' => 'error',
+				'errors' => $validator->errors()
+			];
+		}
+		if ($request->hasFile('image')) {
+			$image = $request->file('image');
+			$filename = time() . '.' . $image->getClientOriginalExtension();
+			$location = public_path('images/' . $filename);
+			Image::make($image)->resize(800, 400)->save($location);
+			$product->image = '/images/' . $filename;
+		}
+		$product->name = $request->name;
+		$product->price = $request->price;
+		$product->category_id = $request->category_id;
+		$product->stock = $request->stock;
+		$product->description = $request->description;
+		$product->save();
+		return [
+			'code' => 200,
+			'status' => 'success',
+			'product' => $product
+		];
+	}
+
+	/**
+	 * It deletes the product from the database
+	 * 
+	 * @param product The product object that was retrieved from the database.
+	 * 
+	 * @return An array with a code and status.
+	 */
+	public function destroy($product)
+	{
+		Product::where('id', $product->id)->delete();
+		return [
+			'code' => 200,
+			'status' => 'success'
+		];
+	}
+
+	/**
+	 * > It updates the visibility of a product
+	 * 
+	 * @param product The product object that was passed to the function.
+	 * 
+	 * @return an array with the key 'code' and the value 200, the key 'status' and the value 'success',
+	 * and the key 'product' and the value .
+	 */
+	public function visibility($product)
+	{
+		Product::where('id', $product->id)->update(['visible' => !$product->visible]);
+		return [
+			'code' => 200,
+			'status' => 'success',
+			'product' => $product
+		];
+	}
+}
