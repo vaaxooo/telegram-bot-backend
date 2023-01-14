@@ -92,7 +92,7 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $e)
     {
-        if ($e->getMessage() == '') {
+        if (!$e->getMessage()) {
             return response()->json([
                 'code' => 404,
                 'message' => 'Method Not Found',
