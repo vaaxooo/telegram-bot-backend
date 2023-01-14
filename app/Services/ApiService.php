@@ -383,8 +383,33 @@ class ApiService
 
 	/* ########################## CATEGORIES ########################## */
 
+	/**
+	 * It gets all the categories that are active and related to a city
+	 * 
+	 * @param request The request object.
+	 */
 	public function getCategories($request)
 	{
+		$validator = Validator::make($request->all(), [
+			'city_id' => 'required',
+		]);
+		if ($validator->fails()) {
+			return [
+				'code' => 400,
+				'status' => 'error',
+				'message' => 'Bad request',
+				'errors' => $validator->errors()
+			];
+		}
+		$city = City::where('city_id', $request->city_id)->first();
+		if (!$city) {
+			return [
+				'code' => 404,
+				'status' => 'error',
+				'message' => 'City not found',
+				'data' => $city
+			];
+		}
 		$categories = RelationCategory::with('categories')
 			->where('city_id', $request->city_id)
 			->where('is_active', true)
@@ -405,6 +430,26 @@ class ApiService
 	 */
 	public function getProducts($request)
 	{
+		$validator = Validator::make($request->all(), [
+			'category_id' => 'required',
+		]);
+		if ($validator->fails()) {
+			return [
+				'code' => 400,
+				'status' => 'error',
+				'message' => 'Bad request',
+				'errors' => $validator->errors()
+			];
+		}
+		$category = Category::where('id', $request->category_id)->first();
+		if (!$category) {
+			return [
+				'code' => 404,
+				'status' => 'error',
+				'message' => 'Category not found',
+				'data' => $category
+			];
+		}
 		$products = Product::where('category_id', $request->category_id)
 			->where('is_active', true)
 			->get();
