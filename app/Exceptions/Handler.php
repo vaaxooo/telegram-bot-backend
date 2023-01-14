@@ -47,7 +47,7 @@ class Handler extends ExceptionHandler
     {
         $this->reportable(function (Throwable $e) {
             return response()->json([
-                'status' => false,
+                'status' => 'error',
                 'error' => $e->getMessage()
             ], 500);
         });
@@ -92,17 +92,9 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $e)
     {
-        if (!$e->getMessage()) {
-            return response()->json([
-                'code' => 404,
-                'message' => 'Method Not Found',
-                'status' => 'error'
-            ]);
-        }
-
         return response()->json([
-            'code' => 500,
-            'message' => 'Internal Server Error',
+            'code' => $e->getStatusCode(),
+            'message' => $e->getMessage(),
             'status' => 'error'
         ]);
     }

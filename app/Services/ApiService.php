@@ -170,6 +170,7 @@ class ApiService
 		}
 
 		$client->referral = $request->referral;
+		$client->balance = (int) $client->balance + 3;
 		$client->save();
 		return [
 			'code' => 200,
