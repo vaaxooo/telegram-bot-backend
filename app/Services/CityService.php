@@ -47,6 +47,7 @@ class CityService
 		return [
 			'code' => 200,
 			'status' => 'success',
+			'message' => 'City created successfully',
 			'data' => $city
 		];
 	}
@@ -92,6 +93,7 @@ class CityService
 		return [
 			'code' => 200,
 			'status' => 'success',
+			'message' => 'City updated successfully',
 			'data' => $city
 		];
 	}
@@ -109,6 +111,7 @@ class CityService
 		return [
 			'code' => 200,
 			'status' => 'success',
+			'message' => 'City deleted successfully',
 			'data' => $city
 		];
 	}

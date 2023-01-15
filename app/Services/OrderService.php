@@ -59,7 +59,7 @@ class OrderService
 		return [
 			'code' => 200,
 			'status' => 'success',
-			'data' => 'Order deleted successfully'
+			'message' => 'Order deleted successfully'
 		];
 	}
 
@@ -81,14 +81,14 @@ class OrderService
 			return [
 				'code' => 400,
 				'status' => 'error',
-				'data' => 'Invalid status'
+				'message' => 'Invalid status'
 			];
 		}
 		Order::where('id', $order->id)->update(['status' => $request->status]);
 		return [
 			'code' => 200,
 			'status' => 'success',
-			'data' => 'Order status updated successfully'
+			'message' => 'Order status updated successfully'
 		];
 	}
 }

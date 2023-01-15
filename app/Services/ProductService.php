@@ -65,6 +65,7 @@ class ProductService
 		return [
 			'code' => 200,
 			'status' => 'success',
+			'message' => 'Product created successfully',
 			'product' => $product
 		];
 	}
@@ -126,6 +127,7 @@ class ProductService
 		return [
 			'code' => 200,
 			'status' => 'success',
+			'message' => 'Product updated successfully',
 			'product' => $product
 		];
 	}
@@ -142,7 +144,8 @@ class ProductService
 		Product::where('id', $product->id)->delete();
 		return [
 			'code' => 200,
-			'status' => 'success'
+			'status' => 'success',
+			'message' => 'Product deleted successfully'
 		];
 	}
 
@@ -160,7 +163,8 @@ class ProductService
 		return [
 			'code' => 200,
 			'status' => 'success',
-			'product' => $product
+			'product' => $product,
+			'message' => 'Product visibility updated successfully'
 		];
 	}
 }

@@ -86,7 +86,7 @@ class RelationCategoryController extends Controller
      * @param  \App\Models\RelationCategory  $relationCategory
      * @return \Illuminate\Http\Response
      */
-    public function destroy(RelationCategory $relationCategory)
+    public function destroy($relationCategory)
     {
         return response()->json($this->relationCategoryService->destroy($relationCategory));
     }

@@ -48,6 +48,7 @@ class CategoryService
 		return [
 			'code' => 200,
 			'status' => 'success',
+			'message' => 'Category created successfully',
 			'data' => $category
 		];
 	}
@@ -93,6 +94,7 @@ class CategoryService
 		return [
 			'code' => 200,
 			'status' => 'success',
+			'message' => 'Category updated successfully',
 			'data' => $category
 		];
 	}
@@ -110,6 +112,7 @@ class CategoryService
 		return [
 			'code' => 200,
 			'status' => 'success',
+			'message' => 'Category deleted successfully',
 			'data' => $category
 		];
 	}
@@ -127,6 +130,7 @@ class CategoryService
 		return [
 			'code' => 200,
 			'status' => 'success',
+			'message' => 'Category visibility updated successfully',
 			'data' => $category
 		];
 	}

@@ -155,7 +155,7 @@ class RelationCategoryService
 				'message' => 'Relation not found'
 			];
 		}
-		$relation->delete();
+		RelationCategory::where('id', $id)->delete();
 		return [
 			'code' => 200,
 			'status' => 'success',
