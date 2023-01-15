@@ -10,6 +10,8 @@ use App\Models\User;
 use App\Models\Order;
 use App\Models\Transaction;
 use App\Models\RelationCategory;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Telegram\Bot\Laravel\Facades\Telegram;
 
@@ -349,6 +351,7 @@ class ApiService
 				'data' => $product
 			];
 		}
+
 		$order = Order::create([
 			'client_id' => $client->id,
 			'product_id' => $product->id,
@@ -361,11 +364,12 @@ class ApiService
 		$product->stock = (int) $product->stock - $request->quantity;
 		$product->save();
 
-		$tMessage = "📦 *New order* 📦" . PHP_EOL;
-		$tMessage .= "👤 *Client:* " . $client->telegram_id . PHP_EOL;
-		$tMessage .= "📦 *Product:* " . $product->name . PHP_EOL;
-		$tMessage .= "📦 *Quantity:* " . $request->quantity . PHP_EOL;
-		$tMessage .= "📦 *Total price:* " . $product->price * $request->quantity . PHP_EOL;
+		$temp_client = $client->nickname ? '@' . $client->nickname : $client->telegram_id;
+		$tMessage = "📦 *Новый заказ* 📦" . PHP_EOL;
+		$tMessage .= "👤 *Клиент:* " . $temp_client . PHP_EOL;
+		$tMessage .= "📦 *Товар:* " . $product->name . PHP_EOL;
+		$tMessage .= "📦 *Количество:* " . $request->quantity . PHP_EOL;
+		$tMessage .= "📦 *Общая сумма:* " . $product->price * $request->quantity . " ₴" . PHP_EOL;
 
 		Telegram::sendMessage([
 			'chat_id' => env('TELEGRAM_SUPPORT_CHAT_ID'),
@@ -569,5 +573,79 @@ class ApiService
 			'message' => 'Transaction created successfully',
 			'data' => $transaction
 		];
+	}
+
+	public function createKunaTransaction($request)
+	{
+		try {
+			$validator = Validator::make($request->all(), [
+				'telegram_id' => 'required',
+				'amount' => 'required|numeric'
+			]);
+			if ($validator->fails()) {
+				return [
+					'code' => 400,
+					'status' => 'error',
+					'message' => 'Bad request',
+					'errors' => $validator->errors()
+				];
+			}
+			$client = Client::where('telegram_id', $request->telegram_id)->first();
+			if (!$client) {
+				return [
+					'code' => 404,
+					'status' => 'error',
+					'message' => 'Client not found',
+					'data' => $client
+				];
+			}
+
+
+			$apiKey = env('KUNA_API_KEY');
+			$apiSecret = env('KUNA_API_SECRET');
+
+
+
+			$apiPath = '/v3/auth/kuna_codes/issued-by-me';
+			$nonce = Carbon::now()->timestamp;
+			$body = [];
+			$signature = $apiPath . $nonce . json_encode($body);
+
+			$sig = hash_hmac('sha384', $signature, $apiSecret);
+			// hex $sig
+			$shex = '';
+			for ($i = 0; $i < strlen($sig); $i += 2) {
+				$shex .= chr(hexdec(substr($sig, $i, 2)));
+			}
+
+
+
+			return [
+				'kun-nonce' => $nonce,
+				'kun-apikey' => $apiKey,
+				'kun-signature' => $shex
+			];
+
+			$response = Http::withHeaders([
+				'kun-nonce' => $nonce,
+				'kun-apikey' => $apiKey,
+				'kun-signature' => $shex
+			])->post('https://api.kuna.io' . $apiPath, $body);
+
+			return $response->json();
+
+
+			$transaction = Transaction::create([
+				'client_id' => $client->id,
+				'amount' => $request->amount
+			]);
+		} catch (\Exception $e) {
+			return [
+				'code' => 500,
+				'status' => 'error',
+				'message' => 'Internal server error',
+				'errors' => $e->getMessage()
+			];
+		}
 	}
 }

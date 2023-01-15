@@ -93,7 +93,7 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $e)
     {
         return response()->json([
-            'code' => $e->getStatusCode(),
+            'code' => 500,
             'message' => $e->getMessage(),
             'status' => 'error'
         ]);
