@@ -152,44 +152,53 @@ class ApiService
 	 */
 	public function setReferral($request)
 	{
-		$validator = Validator::make($request->all(), [
-			'telegram_id' => 'required',
-			'referral' => 'required',
-		]);
-		if ($validator->fails()) {
+		try {
+			$validator = Validator::make($request->all(), [
+				'telegram_id' => 'required',
+				'referral' => 'required',
+			]);
+			if ($validator->fails()) {
+				return [
+					'code' => 400,
+					'status' => 'error',
+					'message' => 'Bad request',
+					'errors' => $validator->errors()
+				];
+			}
+			$client = Client::where('telegram_id', $request->telegram_id)->first();
+			if (!$client) {
+				return [
+					'code' => 404,
+					'status' => 'error',
+					'message' => 'Client not found',
+					'data' => $client
+				];
+			}
+			if (User::where('referral', $request->referral)->exists() == false) {
+				return [
+					'code' => 404,
+					'status' => 'error',
+					'message' => 'Referral not found',
+				];
+			}
+			Client::where('telegram_id', $request->telegram_id)->update([
+				'referral' => $request->referral,
+				'balance' => (int) $client->balance + 25
+			]);
 			return [
-				'code' => 400,
-				'status' => 'error',
-				'message' => 'Bad request',
-				'errors' => $validator->errors()
-			];
-		}
-		$client = Client::where('telegram_id', $request->telegram_id)->first();
-		if (!$client) {
-			return [
-				'code' => 404,
-				'status' => 'error',
-				'message' => 'Client not found',
+				'code' => 200,
+				'status' => 'success',
+				'message' => 'Referral set',
 				'data' => $client
 			];
-		}
-		if (User::where('referral', $request->referral)->exists() == false) {
+		} catch (\Exception $e) {
 			return [
-				'code' => 404,
+				'code' => 500,
 				'status' => 'error',
-				'message' => 'Referral not found',
+				'message' => 'Internal server error',
+				'errors' => $e->getMessage()
 			];
 		}
-		Client::where('telegram_id', $request->telegram_id)->update([
-			'referral' => $request->referral,
-			'balance' => (int) $client->balance + 25
-		]);
-		return [
-			'code' => 200,
-			'status' => 'success',
-			'message' => 'Referral set',
-			'data' => $client
-		];
 	}
 
 	/* ########################## ORDERS ########################## */
