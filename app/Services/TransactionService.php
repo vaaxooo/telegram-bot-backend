@@ -25,7 +25,7 @@ class TransactionService
 	 */
 	public function index()
 	{
-		$transactions = Transaction::orderBy('id', 'desc')->get();
+		$transactions = Transaction::with('client')->orderBy('id', 'desc')->get();
 		return [
 			'code' => 200,
 			'status' => 'success',
