@@ -13,4 +13,9 @@ class City extends Model
         'name',
         'slug',
     ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
 }

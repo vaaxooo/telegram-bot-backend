@@ -20,6 +20,11 @@ class Product extends Model
         'is_active',
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
+
     public function category()
     {
         return $this->belongsTo(Category::class);
