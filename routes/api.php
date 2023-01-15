@@ -93,3 +93,6 @@ Route::get('categories', '\App\Http\Controllers\ApiController@getCategories');
 // PRODUCTS
 Route::get('products', '\App\Http\Controllers\ApiController@getProducts');
 Route::get('products/{product}', '\App\Http\Controllers\ApiController@getProductById');
+
+// TRANSACTIONS
+Route::post('transactions/create', '\App\Http\Controllers\ApiController@createTransaction');
