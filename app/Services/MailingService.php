@@ -15,19 +15,27 @@ class MailingService
 	 */
 	public function send($request)
 	{
-		$clients = Client::get();
-		$clients->each(function ($client) use ($request) {
-			Telegram::sendMessage([
-				'chat_id' => $client->telegram_id,
-				'text' => $request->message,
-				'parse_mode' => 'markdown'
-			]);
-		});
-		return [
-			'code' => 200,
-			'status' => 'success',
-			'message' => 'Message sent',
-		];
+		try {
+			$clients = Client::get();
+			$clients->each(function ($client) use ($request) {
+				Telegram::sendMessage([
+					'chat_id' => $client->telegram_id,
+					'text' => $request->message,
+					'parse_mode' => 'markdown'
+				]);
+			});
+			return [
+				'code' => 200,
+				'status' => 'success',
+				'message' => 'Message sent',
+			];
+		} catch (\Exception $e) {
+			return [
+				'code' => 500,
+				'status' => 'error',
+				'message' => $e->getMessage(),
+			];
+		}
 	}
 
 	/**
@@ -57,8 +65,9 @@ class MailingService
 			];
 		} catch (\Exception $e) {
 			return [
+				'code' => 500,
 				'status' => 'error',
-				'message' => 'Telegram bot is not connected',
+				'message' => $e->getMessage(),
 			];
 		}
 	}
