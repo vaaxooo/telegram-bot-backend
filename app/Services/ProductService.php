@@ -16,7 +16,7 @@ class ProductService
 	 */
 	public function index()
 	{
-		$products = Product::get();
+		$products = Product::with('category')->get();
 		return [
 			'code' => 200,
 			'status' => 'success',
