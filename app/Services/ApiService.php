@@ -453,7 +453,7 @@ class ApiService
 				'errors' => $validator->errors()
 			];
 		}
-		$category = Category::where('id', $request->category_id)->first();
+		$category = RelationCategory::with('category')->where('category_id', $request->category_id)->first();
 		if (!$category) {
 			return [
 				'code' => 404,
@@ -499,7 +499,7 @@ class ApiService
 				'data' => $product
 			];
 		}
-		$category = Category::where('id', $product->category_id)->first();
+		$category = Category::select('id', 'name', 'slug')->where('id', $product->category_id)->first();
 		return [
 			'code' => 200,
 			'status' => 'success',
