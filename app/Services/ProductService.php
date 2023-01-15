@@ -171,7 +171,8 @@ class ProductService
 	 */
 	public function visibility($product)
 	{
-		Product::where('id', $product->id)->update(['visible' => !$product->visible]);
+		$product = Product::find($product);
+		Product::where('id', $product->id)->update(['is_active' => !$product->is_active]);
 		return [
 			'code' => 200,
 			'status' => 'success',

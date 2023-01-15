@@ -99,7 +99,7 @@ class ProductController extends Controller
      * 
      * @return The visibility of the product.
      */
-    public function visibility(Product $product)
+    public function visibility($product)
     {
         return response()->json($this->productService->visibility($product));
     }
