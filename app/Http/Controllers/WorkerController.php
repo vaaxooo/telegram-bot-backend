@@ -86,7 +86,7 @@ class WorkerController extends Controller
 	 * @param  \App\Models\RelationCategory  $relationCategory
 	 * @return \Illuminate\Http\Response
 	 */
-	public function destroy(User $user)
+	public function destroy($user)
 	{
 		return response()->json($this->workerService->destroy($user));
 	}

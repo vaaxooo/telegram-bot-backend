@@ -111,7 +111,7 @@ class WorkerService
 	 */
 	public function destroy($user)
 	{
-		User::where('id', $user->id)->delete();
+		User::where('id', $user)->delete();
 		return [
 			'code' => 200,
 			'status' => 'success',
