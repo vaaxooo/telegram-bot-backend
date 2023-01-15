@@ -418,7 +418,10 @@ class ApiService
 			return [
 				'code' => 200,
 				'status' => 'success',
-				'data' => $categories
+				'data' => [
+					'city' => $city,
+					'categories' => $categories
+				]
 			];
 		} catch (\Exception $e) {
 			return [
@@ -465,7 +468,10 @@ class ApiService
 		return [
 			'code' => 200,
 			'status' => 'success',
-			'data' => $products
+			'data' => [
+				'category' => $category,
+				'products' => $products
+			]
 		];
 	}
 
@@ -493,10 +499,14 @@ class ApiService
 				'data' => $product
 			];
 		}
+		$category = Category::where('id', $product->category_id)->first();
 		return [
 			'code' => 200,
 			'status' => 'success',
-			'data' => $product
+			'data' => [
+				'category' => $category,
+				'product' => $product
+			]
 		];
 	}
 }
