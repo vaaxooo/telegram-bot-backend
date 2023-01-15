@@ -81,6 +81,19 @@ class ClientController extends Controller
     }
 
     /**
+     * It sets the balance of a client.
+     * 
+     * @param Request request The request object
+     * @param client The client's id
+     * 
+     * @return The response is being returned as a json object.
+     */
+    public function setBalance(Request $request, $client)
+    {
+        return response()->json($this->clientService->setBalance($request, $client));
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Client  $client

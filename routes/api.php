@@ -45,6 +45,7 @@ Route::group(['middleware' => ['api']], function ($route) {
         Route::resource('products', '\App\Http\Controllers\ProductController');
 
         // CLIENTS
+        Route::patch('clients/{client}/set-balance', '\App\Http\Controllers\ClientController@setBalance');
         Route::get('clients/{client}/banned', '\App\Http\Controllers\ClientController@banned');
         Route::resource('clients', '\App\Http\Controllers\ClientController');
 

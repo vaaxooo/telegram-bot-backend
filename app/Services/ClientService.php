@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Client;
 use App\Models\Product;
+use Illuminate\Support\Facades\Validator;
 
 class ClientService
 {
@@ -61,6 +62,34 @@ class ClientService
 			'code' => 200,
 			'status' => 'success',
 			'message' => 'Client created successfully'
+		];
+	}
+
+	/**
+	 * It takes a request and a client id, validates the request, and updates the client's balance
+	 * 
+	 * @param request The request object
+	 * @param client The client ID
+	 * 
+	 * @return An array with the following keys:
+	 */
+	public function setBalance($request, $client)
+	{
+		$validator = Validator::make($request->all(), [
+			'balance' => 'required|numeric'
+		]);
+		if ($validator->fails()) {
+			return [
+				'code' => 400,
+				'status' => 'error',
+				'message' => $validator->errors()
+			];
+		}
+		Client::where('id', $client)->update(['balance' => $request->balance]);
+		return [
+			'code' => 200,
+			'status' => 'success',
+			'message' => 'Client balance updated successfully'
 		];
 	}
 
