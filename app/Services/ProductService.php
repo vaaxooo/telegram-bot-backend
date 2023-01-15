@@ -62,7 +62,7 @@ class ProductService
 				'category_id' => $request->category_id,
 				'stock' => $request->stock,
 				'description' => $request->description,
-				'image' => '//' . $_SERVER['HTTP_HOST'] . '/images/' . $filename,
+				'image' => 'https://' . $_SERVER['HTTP_HOST'] . '/images/' . $filename,
 				'slug' => $request->slug
 			]);
 			return [
@@ -127,7 +127,7 @@ class ProductService
 			$filename = time() . '.' . $image->getClientOriginalExtension();
 			$location = public_path('images/' . $filename);
 			Image::make($image)->resize(800, 400)->save($location);
-			$product->image = '//' . $_SERVER['HTTP_HOST'] . '/images/' . $filename;
+			$product->image = 'https://' . $_SERVER['HTTP_HOST'] . '/images/' . $filename;
 		}
 		$product->name = $request->name;
 		$product->price = $request->price;
