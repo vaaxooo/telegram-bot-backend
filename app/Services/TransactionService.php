@@ -125,20 +125,17 @@ class TransactionService
 			$client->balance += (int) $transaction->amount;
 			$client->save();
 
-			$worker = "Отсутствует";
 			$user = Client::where('referral', $client->referral)->first();
-
 			if ($user) {
 				$worker = $user->name;
 			}
 
 			$chat_id = config('app.TELEGRAM_PAYMENTS_CHAT_ID');
 			$tMessage = '*Новая транзакция*' . PHP_EOL;
-			$tMessage .= '*Клиент:* ' . $client->telegram_id . PHP_EOL;
-			$tMessage .= '*Сумма:* ' . $transaction->amount . " ₴" . PHP_EOL;
-			$tMessage .= '*Статус:* Оплачено' . PHP_EOL;
-			$tMessage .= '*Метод:* ' . $transaction->method . PHP_EOL;
-			$tMessage .= '*Воркер:* ' . $worker;
+			$tMessage .= '👤 *Клиент:* ' . $client->telegram_id . PHP_EOL;
+			$tMessage .= '💸 *Сумма:* ' . $transaction->amount . " ₴" . PHP_EOL;
+			$tMessage .= '▪️ *Статус:* Оплачено' . PHP_EOL;
+			$tMessage .= '▪️ *Воркер:* ' . $worker ?? "Отсутствует" . PHP_EOL;
 
 			Telegram::sendMessage([
 				'chat_id' => $chat_id,
