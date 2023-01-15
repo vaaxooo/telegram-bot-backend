@@ -61,7 +61,7 @@ class WorkerService
 			return [
 				'code' => 400,
 				'status' => 'error',
-				'message' => $validator->errors()
+				'errors' => $validator->errors()
 			];
 		}
 		$user = User::create([

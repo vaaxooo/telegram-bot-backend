@@ -41,7 +41,7 @@ class CategoryService
 			return [
 				'code' => 400,
 				'status' => 'error',
-				'data' => $validator->errors()
+				'errors' => $validator->errors()
 			];
 		}
 		$category = Category::create($request->all());
@@ -86,7 +86,7 @@ class CategoryService
 			return [
 				'code' => 400,
 				'status' => 'error',
-				'data' => $validator->errors()
+				'errors' => $validator->errors()
 			];
 		}
 		$category->update($request->all());

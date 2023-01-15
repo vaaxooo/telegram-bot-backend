@@ -40,7 +40,7 @@ class CityService
 			return [
 				'code' => 400,
 				'status' => 'error',
-				'data' => $validator->errors()
+				'errors' => $validator->errors()
 			];
 		}
 		$city = City::create($request->all());
@@ -85,7 +85,7 @@ class CityService
 			return [
 				'code' => 400,
 				'status' => 'error',
-				'data' => $validator->errors()
+				'errors' => $validator->errors()
 			];
 		}
 		City::where('id', $city->id)->update($request->all());
