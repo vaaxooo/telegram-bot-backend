@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('client_id');
             $table->string('amount');
-            $table->string('method')->default('g-24.pro');
             $table->string('status')->default('pending');
             $table->timestamps();
         });

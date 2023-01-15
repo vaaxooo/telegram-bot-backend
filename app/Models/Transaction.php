@@ -12,7 +12,6 @@ class Transaction extends Model
     protected $fillable = [
         'client_id',
         'amount',
-        'method',
         'status',
     ];
 }
