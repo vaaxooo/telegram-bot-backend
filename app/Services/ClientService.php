@@ -19,7 +19,7 @@ class ClientService
 		return [
 			'code' => 200,
 			'status' => 'success',
-			'clients' => $clients
+			'data' => $clients
 		];
 	}
 
@@ -35,7 +35,7 @@ class ClientService
 		return [
 			'code' => 200,
 			'status' => 'success',
-			'client' => $client
+			'data' => $client
 		];
 	}
 
