@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('language_code')->default('ru');
             $table->string('phone_number')->nullable();
             $table->string('balance')->default('0');
-            $table->unsignedBigInteger('referral')->nullable();
+            $table->string('referral')->nullable();
             $table->boolean('is_banned')->default(false);
             $table->timestamps();
         });
