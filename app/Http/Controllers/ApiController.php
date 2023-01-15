@@ -151,8 +151,8 @@ class ApiController extends Controller
 	 * 
 	 * @return The response is being returned as a JSON object.
 	 */
-	public function getProductById(Request $request)
+	public function getProductById($product)
 	{
-		return response()->json($this->apiService->getProductById($request));
+		return response()->json($this->apiService->getProductById($product));
 	}
 }

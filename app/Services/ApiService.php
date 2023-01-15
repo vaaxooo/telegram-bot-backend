@@ -486,9 +486,9 @@ class ApiService
 	 * - message
 	 * - data
 	 */
-	public function getProductById($request)
+	public function getProductById($product)
 	{
-		$product = Product::where('id', $request->product_id)
+		$product = Product::where('id', $product)
 			->where('is_active', true)
 			->first();
 		if (!$product) {
