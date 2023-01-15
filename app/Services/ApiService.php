@@ -173,7 +173,6 @@ class ApiService
 				'data' => $client
 			];
 		}
-
 		if (User::where('referral', $request->referral)->exists() == false) {
 			return [
 				'code' => 404,
@@ -181,10 +180,10 @@ class ApiService
 				'message' => 'Referral not found',
 			];
 		}
-
-		$client->referral = $request->referral;
-		$client->balance = (int) $client->balance + 3;
-		$client->save();
+		Client::where('telegram_id', $request->telegram_id)->update([
+			'referral' => $request->referral,
+			'balance' => (int) $client->balance + 25
+		]);
 		return [
 			'code' => 200,
 			'status' => 'success',
