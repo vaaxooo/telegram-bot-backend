@@ -22,7 +22,7 @@ class RelationCategoryController extends Controller
      */
     public function index()
     {
-        return $this->relationCategoryService->index();
+        return response()->json($this->relationCategoryService->index());
     }
 
     /**
@@ -43,7 +43,7 @@ class RelationCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->relationCategoryService->store($request);
+        return response()->json($this->relationCategoryService->store($request));
     }
 
     /**
@@ -54,7 +54,7 @@ class RelationCategoryController extends Controller
      */
     public function show(RelationCategory $relationCategory)
     {
-        return $this->relationCategoryService->show($relationCategory);
+        return response()->json($this->relationCategoryService->show($relationCategory));
     }
 
     /**
@@ -77,7 +77,7 @@ class RelationCategoryController extends Controller
      */
     public function update(Request $request, RelationCategory $relationCategory)
     {
-        return $this->relationCategoryService->update($request, $relationCategory);
+        return response()->json($this->relationCategoryService->update($request, $relationCategory));
     }
 
     /**
@@ -88,6 +88,6 @@ class RelationCategoryController extends Controller
      */
     public function destroy(RelationCategory $relationCategory)
     {
-        return $this->relationCategoryService->destroy($relationCategory);
+        return response()->json($this->relationCategoryService->destroy($relationCategory));
     }
 }

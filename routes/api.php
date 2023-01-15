@@ -58,6 +58,9 @@ Route::group(['middleware' => ['api']], function ($route) {
         // MAILING
         Route::post('mailing/send', '\App\Http\Controllers\MailingController@send');
         Route::post('mailing/send-by-telegram-id', '\App\Http\Controllers\MailingController@sendByTelegramId');
+
+        // WORKERS
+        Route::resource('workers', '\App\Http\Controllers\WorkerController');
     });
 });
 
