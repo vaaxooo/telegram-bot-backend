@@ -34,6 +34,7 @@ class WorkerService
 	 */
 	public function show($worker)
 	{
+		$worker = User::find($worker);
 		return [
 			'code' => 200,
 			'status' => 'success',

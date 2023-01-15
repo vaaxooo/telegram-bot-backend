@@ -52,7 +52,7 @@ class WorkerController extends Controller
 	 * @param  \App\Models\RelationCategory  $relationCategory
 	 * @return \Illuminate\Http\Response
 	 */
-	public function show(User $user)
+	public function show($user)
 	{
 		return response()->json($this->workerService->show($user));
 	}
@@ -63,7 +63,7 @@ class WorkerController extends Controller
 	 * @param  \App\Models\RelationCategory  $relationCategory
 	 * @return \Illuminate\Http\Response
 	 */
-	public function edit(User $relationCategory)
+	public function edit(User $user)
 	{
 		//
 	}
