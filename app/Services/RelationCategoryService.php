@@ -18,7 +18,7 @@ class RelationCategoryService
 	 */
 	public function index()
 	{
-		$relations = RelationCategory::with('city', 'category')->get();
+		$relations = RelationCategory::with('city', 'category')->orderBy('id', 'desc')->get();
 		return [
 			'code' => 200,
 			'status' => 'success',

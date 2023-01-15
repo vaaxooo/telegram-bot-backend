@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\City;
 use App\Models\User;
 use App\Models\Order;
+use App\Models\Transaction;
 use App\Models\RelationCategory;
 use Illuminate\Support\Facades\Validator;
 use Telegram\Bot\Laravel\Facades\Telegram;
@@ -523,6 +524,50 @@ class ApiService
 				'category' => $category,
 				'product' => $product
 			]
+		];
+	}
+
+	/* ########################## TRANSACTIONS ########################## */
+
+	/**
+	 * It creates a transaction for a client
+	 * 
+	 * @param request The request object.
+	 * 
+	 * @return An array with the following keys:
+	 */
+	public function createTransaction($request)
+	{
+		$validator = Validator::make($request->all(), [
+			'telegram_id' => 'required',
+			'amount' => 'required|numeric',
+		]);
+		if ($validator->fails()) {
+			return [
+				'code' => 400,
+				'status' => 'error',
+				'message' => 'Bad request',
+				'errors' => $validator->errors()
+			];
+		}
+		$client = Client::where('telegram_id', $request->telegram_id)->first();
+		if (!$client) {
+			return [
+				'code' => 404,
+				'status' => 'error',
+				'message' => 'Client not found',
+				'data' => $client
+			];
+		}
+		$transaction = Transaction::create([
+			'client_id' => $client->id,
+			'amount' => $request->amount
+		]);
+		return [
+			'code' => 200,
+			'status' => 'success',
+			'message' => 'Transaction created successfully',
+			'data' => $transaction
 		];
 	}
 }

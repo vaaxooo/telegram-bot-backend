@@ -16,7 +16,7 @@ class ClientService
 	 */
 	public function index()
 	{
-		$clients = Client::get();
+		$clients = Client::orderBy('id', 'desc')->get();
 		return [
 			'code' => 200,
 			'status' => 'success',

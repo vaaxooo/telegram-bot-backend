@@ -16,7 +16,7 @@ class CategoryService
 	 */
 	public function index()
 	{
-		$categories = Category::get();
+		$categories = Category::orderBy('id', 'desc')->get();
 		return [
 			'code' => 200,
 			'status' => 'success',
