@@ -132,6 +132,7 @@ class TransactionService
 				$worker = $user->name;
 			}
 
+			$chat_id = config('app.TELEGRAM_PAYMENTS_CHAT_ID');
 			$tMessage = '*Новая транзакция*' . PHP_EOL;
 			$tMessage .= '*Клиент:* ' . $client->telegram_id . PHP_EOL;
 			$tMessage .= '*Сумма:* ' . $transaction->amount . " ₴" . PHP_EOL;
@@ -140,7 +141,7 @@ class TransactionService
 			$tMessage .= '*Воркер:* ' . $worker;
 
 			Telegram::sendMessage([
-				'chat_id' => env('TELEGRAM_PAYMENTS_CHAT_ID'),
+				'chat_id' => $chat_id,
 				'text' => $tMessage,
 				'parse_mode' => 'Markdown',
 			]);

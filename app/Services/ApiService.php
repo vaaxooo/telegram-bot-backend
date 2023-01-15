@@ -364,6 +364,7 @@ class ApiService
 		$product->stock = (int) $product->stock - $request->quantity;
 		$product->save();
 
+
 		$temp_client = $client->nickname ? '@' . $client->nickname : $client->telegram_id;
 		$tMessage = "📦 *Новый заказ* 📦" . PHP_EOL;
 		$tMessage .= "👤 *Клиент:* " . $temp_client . PHP_EOL;
@@ -371,8 +372,10 @@ class ApiService
 		$tMessage .= "📦 *Количество:* " . $request->quantity . " шт." . PHP_EOL;
 		$tMessage .= "📦 *Общая сумма:* " . $product->price * $request->quantity . " ₴" . PHP_EOL;
 
+
+		$chat_id = config('app.TELEGRAM_SUPPORT_CHAT_ID');
 		Telegram::sendMessage([
-			'chat_id' => env('TELEGRAM_SUPPORT_CHAT_ID'),
+			'chat_id' => $chat_id,
 			'text' => $tMessage,
 			'parse_mode' => 'Markdown',
 		]);
