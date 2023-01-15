@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\MailingService;
 
-class OrderController extends Controller
+class MailingController extends Controller
 {
 	private $mailingService;
 

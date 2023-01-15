@@ -20,8 +20,14 @@ class MailingService
 			Telegram::sendMessage([
 				'chat_id' => $client->telegram_id,
 				'text' => $request->message,
+				'parse_mode' => 'markdown'
 			]);
 		});
+		return [
+			'code' => 200,
+			'status' => 'success',
+			'message' => 'Message sent',
+		];
 	}
 
 	/**
@@ -31,16 +37,29 @@ class MailingService
 	 */
 	public function sendByTelegramId($request)
 	{
-		$client = Client::where('telegram_id', $request->telegram_id)->first();
-		if (!$client) {
-			return response()->json([
-				'status' => 'error',
-				'message' => 'Client not found',
+		try {
+			$client = Client::where('telegram_id', $request->telegram_id)->first();
+			if (!$client) {
+				return [
+					'status' => 'error',
+					'message' => 'Client not found',
+				];
+			}
+			Telegram::sendMessage([
+				'chat_id' => $request->telegram_id,
+				'text' => $request->message,
+				'parse_mode' => 'markdown'
 			]);
+			return [
+				'code' => 200,
+				'status' => 'success',
+				'message' => 'Message sent',
+			];
+		} catch (\Exception $e) {
+			return [
+				'status' => 'error',
+				'message' => 'Telegram bot is not connected',
+			];
 		}
-		Telegram::sendMessage([
-			'chat_id' => $request->telegram_id,
-			'text' => $request->message,
-		]);
 	}
 }

@@ -174,6 +174,14 @@ class ApiService
 					'data' => $client
 				];
 			}
+			if ($client->referral != null) {
+				return [
+					'code' => 403,
+					'status' => 'error',
+					'message' => 'Referral already set',
+					'data' => $client
+				];
+			}
 			if (User::where('referral', $request->referral)->exists() == false) {
 				return [
 					'code' => 404,
