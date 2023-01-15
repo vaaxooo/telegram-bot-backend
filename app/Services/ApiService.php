@@ -243,7 +243,7 @@ class ApiService
 				'data' => $client
 			];
 		}
-		$orders = Order::where('client_id', $client->id)->get();
+		$orders = Order::with('product')->where('client_id', $client->id)->orderBy('id', 'desc')->limit(5)->get();
 		return [
 			'code' => 200,
 			'status' => 'success',
