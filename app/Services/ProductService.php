@@ -34,40 +34,50 @@ class ProductService
 	 */
 	public function store($request)
 	{
-		$validator = Validator::make($request->all(), [
-			'name' => 'required',
-			'price' => 'required',
-			'category_id' => 'required',
-			'stock' => 'required',
-			'description' => 'required',
-		]);
-		if ($validator->fails()) {
+		try {
+			$validator = Validator::make($request->all(), [
+				'name' => 'required',
+				'price' => 'required',
+				'category_id' => 'required',
+				'stock' => 'required',
+				'description' => 'required',
+				'slug' => 'required|unique:products'
+			]);
+			if ($validator->fails()) {
+				return [
+					'code' => 400,
+					'status' => 'error',
+					'errors' => $validator->errors()
+				];
+			}
+			if ($request->hasFile('image')) {
+				$image = $request->file('image');
+				$filename = time() . '.' . $image->getClientOriginalExtension();
+				$location = public_path('images/' . $filename);
+				Image::make($image)->resize(800, 400)->save($location);
+			}
+			$product = Product::create([
+				'name' => $request->name,
+				'price' => $request->price,
+				'category_id' => $request->category_id,
+				'stock' => $request->stock,
+				'description' => $request->description,
+				'image' => '//' . $_SERVER['HTTP_HOST'] . '/images/' . $filename,
+				'slug' => $request->slug
+			]);
+			return [
+				'code' => 200,
+				'status' => 'success',
+				'message' => 'Product created successfully',
+				'data' => $product
+			];
+		} catch (\Exception $e) {
 			return [
 				'code' => 400,
 				'status' => 'error',
-				'errors' => $validator->errors()
+				'errors' => $e->getMessage()
 			];
 		}
-		if ($request->hasFile('image')) {
-			$image = $request->file('image');
-			$filename = time() . '.' . $image->getClientOriginalExtension();
-			$location = public_path('images/' . $filename);
-			Image::make($image)->resize(800, 400)->save($location);
-		}
-		$product = Product::create([
-			'name' => $request->name,
-			'price' => $request->price,
-			'category_id' => $request->category_id,
-			'stock' => $request->stock,
-			'description' => $request->description,
-			'image' => '/images/' . $filename,
-		]);
-		return [
-			'code' => 200,
-			'status' => 'success',
-			'message' => 'Product created successfully',
-			'data' => $product
-		];
 	}
 
 	/**
@@ -103,6 +113,7 @@ class ProductService
 			'category_id' => 'required',
 			'stock' => 'required',
 			'description' => 'required',
+			'slug' => 'required|unique:products,slug,' . $product->id . ',id'
 		]);
 		if ($validator->fails()) {
 			return [
@@ -116,13 +127,14 @@ class ProductService
 			$filename = time() . '.' . $image->getClientOriginalExtension();
 			$location = public_path('images/' . $filename);
 			Image::make($image)->resize(800, 400)->save($location);
-			$product->image = '/images/' . $filename;
+			$product->image = '//' . $_SERVER['HTTP_HOST'] . '/images/' . $filename;
 		}
 		$product->name = $request->name;
 		$product->price = $request->price;
 		$product->category_id = $request->category_id;
 		$product->stock = $request->stock;
 		$product->description = $request->description;
+		$product->slug = $request->slug;
 		$product->save();
 		return [
 			'code' => 200,
