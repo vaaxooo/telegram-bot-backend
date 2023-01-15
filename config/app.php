@@ -30,7 +30,7 @@ return [
 
     'env' => env('APP_ENV', 'production'),
     'TELEGRAM_SUPPORT_CHAT_ID' => env('TELEGRAM_SUPPORT_CHAT_ID', '-1001831931006'),
-    'TELEGRAM_PAYMENTS_CHAT_ID' => env('TELEGRAM_SUPPORT_CHAT_ID', '-1001809782753'),
+    'TELEGRAM_PAYMENTS_CHAT_ID' => env('TELEGRAM_PAYMENTS_CHAT_ID', '-1001809782753'),
 
     /*
     |--------------------------------------------------------------------------

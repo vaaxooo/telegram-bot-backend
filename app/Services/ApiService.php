@@ -368,7 +368,7 @@ class ApiService
 		$tMessage = "📦 *Новый заказ* 📦" . PHP_EOL;
 		$tMessage .= "👤 *Клиент:* " . $temp_client . PHP_EOL;
 		$tMessage .= "📦 *Товар:* " . $product->name . PHP_EOL;
-		$tMessage .= "📦 *Количество:* " . $request->quantity . PHP_EOL;
+		$tMessage .= "📦 *Количество:* " . $request->quantity . " шт." . PHP_EOL;
 		$tMessage .= "📦 *Общая сумма:* " . $product->price * $request->quantity . " ₴" . PHP_EOL;
 
 		Telegram::sendMessage([
