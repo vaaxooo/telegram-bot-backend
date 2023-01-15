@@ -20,7 +20,7 @@ class ProductService
 		return [
 			'code' => 200,
 			'status' => 'success',
-			'products' => $products
+			'data' => $products
 		];
 	}
 
@@ -66,7 +66,7 @@ class ProductService
 			'code' => 200,
 			'status' => 'success',
 			'message' => 'Product created successfully',
-			'product' => $product
+			'data' => $product
 		];
 	}
 
@@ -82,7 +82,7 @@ class ProductService
 		return [
 			'code' => 200,
 			'status' => 'success',
-			'product' => $product
+			'data' => $product
 		];
 	}
 
@@ -128,7 +128,7 @@ class ProductService
 			'code' => 200,
 			'status' => 'success',
 			'message' => 'Product updated successfully',
-			'product' => $product
+			'data' => $product
 		];
 	}
 
@@ -163,7 +163,7 @@ class ProductService
 		return [
 			'code' => 200,
 			'status' => 'success',
-			'product' => $product,
+			'data' => $product,
 			'message' => 'Product visibility updated successfully'
 		];
 	}
