@@ -14,4 +14,9 @@ class Transaction extends Model
         'amount',
         'status',
     ];
+
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
 }
