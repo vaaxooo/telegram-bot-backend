@@ -107,7 +107,7 @@ class TransactionService
 	public function setStatus($request, $transaction)
 	{
 		$validator = Validator::make($request->all(), [
-			'status' => 'required,'
+			'status' => 'required'
 		]);
 		if ($validator->fails()) {
 			return [
