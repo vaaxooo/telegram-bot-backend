@@ -88,7 +88,7 @@ class WorkerService
 	 */
 	public function update($request, $user)
 	{
-		$user = User::find($user->id);
+		$user = User::find($user);
 		if ($request->password) {
 			$user->password = bcrypt($request->password);
 		}

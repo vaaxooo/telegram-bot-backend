@@ -75,7 +75,7 @@ class WorkerController extends Controller
 	 * @param  \App\Models\RelationCategory  $relationCategory
 	 * @return \Illuminate\Http\Response
 	 */
-	public function update(Request $request, User $user)
+	public function update(Request $request, $user)
 	{
 		return response()->json($this->workerService->update($request, $user));
 	}
