@@ -131,8 +131,9 @@ class TransactionService
 			}
 
 			$chat_id = config('app.TELEGRAM_PAYMENTS_CHAT_ID');
+			$temp_client = $client->nickname ? '@' . $client->nickname : $client->telegram_id;
 			$tMessage = '*Новая транзакция*' . PHP_EOL;
-			$tMessage .= '👤 *Клиент:* ' . $client->telegram_id . PHP_EOL;
+			$tMessage .= '👤 *Клиент:* ' . $temp_client . PHP_EOL;
 			$tMessage .= '💸 *Сумма:* ' . $transaction->amount . " ₴" . PHP_EOL;
 			$tMessage .= '▪️ *Статус:* Оплачено' . PHP_EOL;
 			$tMessage .= '▪️ *Воркер:* ' . $worker ?? "Отсутствует" . PHP_EOL;
