@@ -67,6 +67,9 @@ Route::group(['middleware' => ['api']], function ($route) {
         Route::post('transactions/{transaction}/set-status', '\App\Http\Controllers\TransactionController@setStatus');
         Route::post('transactions/{transaction}/update-amount', '\App\Http\Controllers\TransactionController@updateAmount');
         Route::resource('transactions', '\App\Http\Controllers\TransactionController');
+
+        // STATISTICS
+        Route::get('statistics/weekly', '\App\Http\Controllers\StatisticController@weeklyStatistic');
     });
 });
 
