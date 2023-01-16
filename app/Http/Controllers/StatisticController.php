@@ -6,7 +6,7 @@ use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Services\StatisticService;
 
-class TransactionController extends Controller
+class StatisticController extends Controller
 {
 	private $statisticService;
 
