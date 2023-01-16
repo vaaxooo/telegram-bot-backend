@@ -54,7 +54,7 @@ class ProductService
 				$image = $request->file('image');
 				$filename = time() . '.' . $image->getClientOriginalExtension();
 				$location = public_path('images/' . $filename);
-				Image::make($image)->resize(800, 400)->save($location);
+				Image::make($image)->save($location);
 			}
 			$product = Product::create([
 				'name' => $request->name,
@@ -126,7 +126,7 @@ class ProductService
 			$image = $request->file('image');
 			$filename = time() . '.' . $image->getClientOriginalExtension();
 			$location = public_path('images/' . $filename);
-			Image::make($image)->resize(800, 400)->save($location);
+			Image::make($image)->save($location);
 			$product->image = 'https://' . $_SERVER['HTTP_HOST'] . '/images/' . $filename;
 		}
 		$product->name = $request->name;
