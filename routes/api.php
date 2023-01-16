@@ -84,6 +84,7 @@ Route::post('client/start', '\App\Http\Controllers\ApiController@start');
 Route::get('client/profile', '\App\Http\Controllers\ApiController@getProfile');
 Route::get('client/balance', '\App\Http\Controllers\ApiController@getBalance');
 Route::post('client/set-referral', '\App\Http\Controllers\ApiController@setReferral');
+Route::get('client/check-ban', '\App\Http\Controllers\ApiController@checkBan');
 
 // ORDERS
 Route::get('orders', '\App\Http\Controllers\ApiController@getOrders');

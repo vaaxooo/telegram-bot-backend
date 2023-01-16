@@ -51,6 +51,18 @@ class ApiController extends Controller
 		return response()->json($this->apiService->getBalance($request));
 	}
 
+	/**
+	 * It checks if the user is banned
+	 * 
+	 * @param Request request The request object
+	 * 
+	 * @return A JSON response.
+	 */
+	public function checkBan(Request $request)
+	{
+		return response()->json($this->apiService->checkBan($request));
+	}
+
 
 	/**
 	 * It takes a request, passes it to the apiService, and returns the response as json

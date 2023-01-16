@@ -147,6 +147,44 @@ class ApiService
 		];
 	}
 
+	public function checkBan($request)
+	{
+		$validator = Validator::make($request->all(), [
+			'telegram_id' => 'required',
+		]);
+		if ($validator->fails()) {
+			return [
+				'code' => 400,
+				'status' => 'error',
+				'message' => 'Bad request',
+				'errors' => $validator->errors()
+			];
+		}
+		$client = Client::select('is_banned')->where('telegram_id', $request->telegram_id)->first();
+		if (!$client) {
+			return [
+				'code' => 404,
+				'status' => 'error',
+				'message' => 'Client not found',
+				'data' => $client
+			];
+		}
+
+		if ($client->is_banned == true) {
+			return [
+				'code' => 403,
+				'status' => 'error',
+				'message' => 'Client is banned',
+			];
+		}
+
+		return [
+			'code' => 200,
+			'status' => 'success',
+			'message' => 'Client is not banned',
+		];
+	}
+
 	/**
 	 * It sets the referral of a client
 	 * 
