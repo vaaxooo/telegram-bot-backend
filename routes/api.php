@@ -70,6 +70,9 @@ Route::group(['middleware' => ['api']], function ($route) {
 
         // STATISTICS
         Route::get('statistics/weekly', '\App\Http\Controllers\StatisticController@weeklyStatistic');
+
+        // REVIEWS
+        Route::resource('reviews', '\App\Http\Controllers\ReviewController');
     });
 });
 
@@ -100,3 +103,6 @@ Route::get('products/{product}', '\App\Http\Controllers\ApiController@getProduct
 // TRANSACTIONS
 Route::post('transactions/create', '\App\Http\Controllers\ApiController@createTransaction');
 Route::post('transactions/kuna/create', '\App\Http\Controllers\ApiController@createKunaTransaction');
+
+// REVIEWS
+Route::get('reviews', '\App\Http\Controllers\ApiController@getReviews');

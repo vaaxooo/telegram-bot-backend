@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Order;
 use App\Models\Transaction;
 use App\Models\RelationCategory;
+use App\Models\Review;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
@@ -531,6 +532,23 @@ class ApiService
 				'category' => $category,
 				'product' => $product
 			]
+		];
+	}
+
+	/* ########################## REVIEWS ########################## */
+
+	/**
+	 * It returns an array with a code, status, and data
+	 * 
+	 * @return An array with the code, status, and data.
+	 */
+	public function getReviews()
+	{
+		$reviews = Review::select('id', 'comment', 'created_at')->get();
+		return [
+			'code' => 200,
+			'status' => 'success',
+			'data' => $reviews
 		];
 	}
 

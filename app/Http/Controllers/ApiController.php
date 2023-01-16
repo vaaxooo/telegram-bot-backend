@@ -156,6 +156,20 @@ class ApiController extends Controller
 		return response()->json($this->apiService->getProductById($product));
 	}
 
+	/* ########################## REVIEWS ########################## */
+
+	/**
+	 * It returns a JSON response of the result of the `getReviews` function in the `ApiService` class
+	 * 
+	 * @param Request request The request object
+	 * 
+	 * @return A JSON response.
+	 */
+	public function getReviews(Request $request)
+	{
+		return response()->json($this->apiService->getReviews($request));
+	}
+
 	/* ########################## TRANSACTIONS ########################## */
 
 	/**
