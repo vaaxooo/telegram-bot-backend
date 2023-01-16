@@ -34,7 +34,7 @@ class StatisticService
 			$managersProfit[$manager->name] = DB::table('transactions')->join('clients', 'transactions.client_id', '=', 'clients.id')
 				->where('transactions.created_at', '>=', date('Y-m-d', strtotime('-7 days')))
 				->where('transactions.status', 'approved')
-				->where('client.referral', $manager->referral)
+				->where('clients.referral', $manager->referral)
 				->sum('transactions.amount');
 		}
 
