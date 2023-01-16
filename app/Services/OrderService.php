@@ -22,7 +22,7 @@ class OrderService
 	 */
 	public function index()
 	{
-		$orders = Order::orderBy('id', 'desc')->get();
+		$orders = Order::with('client', 'product')->orderBy('id', 'desc')->get();
 		return [
 			'code' => 200,
 			'status' => 'success',
@@ -39,6 +39,8 @@ class OrderService
 	 */
 	public function show($order)
 	{
+		$order->client = Client::where('id', $order->client_id)->first();
+		$order->product = Product::where('id', $order->product_id)->first();
 		return [
 			'code' => 200,
 			'status' => 'success',
