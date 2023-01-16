@@ -30,7 +30,7 @@ class StatisticService
 		$managers = User::where('role', 'manager')->get();
 		$managersProfit = [];
 		foreach ($managers as $manager) {
-			$managersProfit[$manager->name] = Transaction::where('created_at', '>=', date('Y-m-d', strtotime('-7 days')))->where('status', 'approved')->where('manager_id', $manager->id)->sum('amount');
+			$managersProfit[$manager->name] = Transaction::where('created_at', '>=', date('Y-m-d', strtotime('-7 days')))->where('status', 'approved')->where('referral', $manager->referral)->sum('amount');
 		}
 
 		return [
