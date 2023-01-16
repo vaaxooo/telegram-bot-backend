@@ -12,7 +12,7 @@ class OrderService
 	private const STATUSES = [
 		'pending',
 		'approved',
-		'canceled'
+		'rejected'
 	];
 
 	/**
