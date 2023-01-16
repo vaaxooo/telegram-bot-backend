@@ -25,6 +25,6 @@ class TransactionController extends Controller
 	 */
 	public function weeklyStatistic(Request $request)
 	{
-		return response()->json($this->statisticService->weeklyStatistic());
+		return response()->json($this->statisticService->weeklyStatistic($request));
 	}
 }
