@@ -72,6 +72,7 @@ class DistrictService
 		return [
 			'code' => 201,
 			'status' => 'success',
+			'message' => 'District has been created',
 			'data' => $district
 		];
 	}
@@ -105,6 +106,7 @@ class DistrictService
 		return [
 			'code' => 200,
 			'status' => 'success',
+			'message' => 'District has been updated',
 			'data' => $district
 		];
 	}
@@ -122,6 +124,7 @@ class DistrictService
 		return [
 			'code' => 200,
 			'status' => 'success',
+			'message' => 'District has been deleted',
 			'data' => $district
 		];
 	}
