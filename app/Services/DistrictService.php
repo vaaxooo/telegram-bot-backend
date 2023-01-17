@@ -61,7 +61,7 @@ class DistrictService
 			return [
 				'code' => 400,
 				'status' => 'error',
-				'data' => $validator->errors()
+				'errors' => $validator->errors()
 			];
 		}
 		$district = District::create([
@@ -95,7 +95,7 @@ class DistrictService
 			return [
 				'code' => 400,
 				'status' => 'error',
-				'data' => $validator->errors()
+				'errors' => $validator->errors()
 			];
 		}
 		$district->city_id = $request->city_id;
