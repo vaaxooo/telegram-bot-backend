@@ -136,7 +136,7 @@ class DistrictService
 	 */
 	public function visibility($district)
 	{
-		$district = District::find($district->id);
+		$district = District::find($district);
 		District::where('id', $district->id)->update(['is_active' => !$district->is_active]);
 		return [
 			'code' => 200,
