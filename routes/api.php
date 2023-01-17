@@ -98,6 +98,9 @@ Route::post('orders/create', '\App\Http\Controllers\ApiController@createOrder');
 // CITIES
 Route::get('cities', '\App\Http\Controllers\ApiController@getCities');
 
+// DISTRICTS
+Route::get('districts', '\App\Http\Controllers\ApiController@getDistricts');
+
 // CATEGORIES
 Route::get('categories', '\App\Http\Controllers\ApiController@getCategories');
 
