@@ -721,6 +721,16 @@ class ApiService
 				'text' => $tMessage,
 				'parse_mode' => 'Markdown',
 			]);
+			return [
+				'code' => 200,
+				'status' => 'success',
+				'message' => 'Code activated successfully'
+			];
 		}
+		return [
+			'code' => 404,
+			'status' => 'error',
+			'message' => 'Code Not Found'
+		];
 	}
 }
