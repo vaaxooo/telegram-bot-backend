@@ -141,7 +141,7 @@ class DistrictService
 		return [
 			'code' => 200,
 			'status' => 'success',
-			'data' => $district
+			'message' => 'District visibility has been updated'
 		];
 	}
 }
