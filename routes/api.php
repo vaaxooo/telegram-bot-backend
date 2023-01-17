@@ -36,6 +36,10 @@ Route::group(['middleware' => ['api']], function ($route) {
         // CITIES
         Route::resource('cities', '\App\Http\Controllers\CityController');
 
+        // DISTRICTS
+        Route::get('districts/{district}/visibility', '\App\Http\Controllers\DistrictController@visibility');
+        Route::resource('districts', '\App\Http\Controllers\DistrictController');
+
         // CATEGORIES
         Route::get('categories/{category}/visibility', '\App\Http\Controllers\CategoryController@visibility');
         Route::resource('categories', '\App\Http\Controllers\CategoryController');

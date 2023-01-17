@@ -128,6 +128,20 @@ class ApiController extends Controller
 		return response()->json($this->apiService->getCities($request));
 	}
 
+	/* ########################## DISTRICTS ########################## */
+
+	/**
+	 * It takes a request, passes it to the apiService, and returns the response as json
+	 * 
+	 * @param Request request The request object
+	 * 
+	 * @return The response is being returned as a JSON object.
+	 */
+	public function getDistricts(Request $request)
+	{
+		return response()->json($this->apiService->getDistricts($request));
+	}
+
 	/* ########################## CATEGORIES ########################## */
 
 	/**

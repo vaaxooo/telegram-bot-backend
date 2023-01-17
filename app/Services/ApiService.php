@@ -11,6 +11,7 @@ use App\Models\Order;
 use App\Models\Transaction;
 use App\Models\RelationCategory;
 use App\Models\Review;
+use App\Models\District;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
@@ -347,6 +348,8 @@ class ApiService
 			'telegram_id' => 'required',
 			'product_id' => 'required',
 			'quantity' => 'required',
+			'city_id' => 'required|exists:cities,id',
+			'district_id' => 'required|exists:districts,id',
 		]);
 		if ($validator->fails()) {
 			return [
@@ -396,6 +399,8 @@ class ApiService
 			'product_id' => $product->id,
 			'quantity' => $request->quantity,
 			'total_price' => $product->price * $request->quantity,
+			'city_id' => $request->city_id,
+			'district_id' => $request->district_id,
 			'status' => 'pending',
 		]);
 		$client->balance = (int) $client->balance - $product->price * $request->quantity;
@@ -441,6 +446,25 @@ class ApiService
 			'code' => 200,
 			'status' => 'success',
 			'data' => $cities
+		];
+	}
+
+	/* ########################## DISTRICTS ########################## */
+
+	/**
+	 * It returns a list of districts based on the city id
+	 * 
+	 * @param request The request object
+	 * 
+	 * @return An array with a code, status, and data.
+	 */
+	public function getDistricts($request)
+	{
+		$districts = District::where('city_id', $request->city_id)->get();
+		return [
+			'code' => 200,
+			'status' => 'success',
+			'data' => $districts
 		];
 	}
 

@@ -14,7 +14,8 @@ class Order extends Model
         'product_id',
         'total_price',
         'quantity',
-        'city',
+        'city_id',
+        'district_id',
         'status',
     ];
 
@@ -37,5 +38,25 @@ class Order extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    /**
+     * > This function returns the city that this order belongs to
+     * 
+     * @return A collection of all the orders for the city.
+     */
+    public function city()
+    {
+        return $this->belongsTo(City::class);
+    }
+
+    /**
+     * > This function returns the district that this order belongs to
+     * 
+     * @return A collection of all the orders for the district.
+     */
+    public function district()
+    {
+        return $this->belongsTo(District::class);
     }
 }
