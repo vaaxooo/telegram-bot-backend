@@ -110,7 +110,7 @@ Route::get('products/{product}', '\App\Http\Controllers\ApiController@getProduct
 
 // TRANSACTIONS
 Route::post('transactions/create', '\App\Http\Controllers\ApiController@createTransaction');
-Route::post('transactions/kuna/create', '\App\Http\Controllers\ApiController@createKunaTransaction');
+Route::post('transactions/bitobmen/activate', '\App\Http\Controllers\ApiController@activateBitobmen');
 
 // REVIEWS
 Route::get('reviews', '\App\Http\Controllers\ApiController@getReviews');

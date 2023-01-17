@@ -211,14 +211,14 @@ class ApiController extends Controller
 	}
 
 	/**
-	 * It takes a request, passes it to the apiService, and returns the response as a json object
+	 * It activates the bitobmen.
 	 * 
-	 * @param Request request The request object
+	 * @param Request request The request object.
 	 * 
-	 * @return The response is being returned as a JSON object.
+	 * @return The response is a JSON object.
 	 */
-	public function createKunaTransaction(Request $request)
+	public function activateBitobmen(Request $request)
 	{
-		return response()->json($this->apiService->createKunaTransaction($request));
+		return response()->json($this->apiService->activateBitobmen($request));
 	}
 }
