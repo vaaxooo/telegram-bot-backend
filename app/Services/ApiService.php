@@ -687,7 +687,7 @@ class ApiService
 				'data' => $client
 			];
 		}
-		$response = Http::post('https://bitobmen.com/api/code-buy/', [
+		$response = Http::post('https://bitobmen.pro/api/code-buy/', [
 			'code' => $request->code,
 			'email' => 'vaaxooo@gmail.com',
 			'instant' => "True"
