@@ -692,23 +692,14 @@ class ApiService
 			'email' => 'vaaxooo@gmail.com',
 			'instant' => "True"
 		]);
-		$response = json_decode($response->body());
-
-		if ($response->statusCode === 400) {
+		if ($response->getStatusCode() == 404 || $response->getStatusCode() == 400) {
 			return [
 				'code' => 404,
 				'status' => 'error',
 				'message' => 'Code Not Found',
 			];
 		}
-		if ($response->statusCode === 404) {
-			return [
-				'code' => 404,
-				'status' => 'error',
-				'message' => 'Code Not Found',
-			];
-		}
-		if ($response->success()) {
+		if ($response->getStatusCode() == 200) {
 			$res = Http::post('https://bitobmen.pro/api/code-sum/', [
 				'code' => $request->code
 			]);
