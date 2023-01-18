@@ -693,11 +693,15 @@ class ApiService
 			'instant' => "True"
 		]);
 		$response = json_decode($response->body());
-		if ($response->clientError()) {
-			sleep(5);
-			$this->activateBitobmen($request);
+
+		if ($response->statusCode === 400) {
+			return [
+				'code' => 404,
+				'status' => 'error',
+				'message' => 'Code Not Found',
+			];
 		}
-		if ($response->failed()) {
+		if ($response->statusCode === 404) {
 			return [
 				'code' => 404,
 				'status' => 'error',
